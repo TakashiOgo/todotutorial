@@ -39,18 +39,18 @@ class MyHomePage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ReorderableListView(
-              onReorder:(oldIndex, newIndex) {
-                ref.read(tasksProvider.notifier).dragAndDrop(oldIndex, newIndex);
-              },
-              children: taskList.map((task) =>
-                CheckboxListTile(
-                  key: Key(task.title),
-                  value: task.isDone,
-                  onChanged: (value)=>ref.read(tasksProvider.notifier).toggleDone(task.id),
-                  title: Text(task.title)
-                ),
-              ).toList(),
+          onReorder:(oldIndex, newIndex) {
+            ref.read(tasksProvider.notifier).dragAndDrop(oldIndex, newIndex);
+          },
+          children: taskList.map((task) =>
+            CheckboxListTile(
+              key: Key(task.title),
+              value: task.isDone,
+              onChanged: (value)=>ref.read(tasksProvider.notifier).toggleDone(task.id),
+              title: Text(task.title)
             ),
+          ).toList(),
+        ),
       ),
     );
   }
