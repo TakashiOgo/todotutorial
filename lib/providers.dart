@@ -33,11 +33,12 @@ class TasksNotifier extends StateNotifier<List<Task>> {
 
   void dragAndDrop(int oldIndex, int newIndex) {
     List<Task> newState = [];
-    if(oldIndex < newIndex) {
-      newIndex -= 1;
+    for (final task in state) {
+      newState.add(task);
     }
-    Task task = tasksList.removeAt(oldIndex);
-    tasksList.insert(newIndex, task);
+    final movedTask = newState.removeAt(oldIndex);
+    final insertionIndex = newIndex > oldIndex ? newIndex - 1 : newIndex;
+    newState.insert(insertionIndex, movedTask);
     state = newState;
   }
 

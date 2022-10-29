@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 
-// enum Sex{male, female}
-//
-// extension SexString on Sex{
-//   String get string {
-//     switch (this) {
-//       case Sex.male:
-//         return 'オス';
-//       case Sex.female:
-//         return 'メス';
-//     }
-//   }
-// }
-
 @immutable
 class Task{
   const Task({
