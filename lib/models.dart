@@ -19,4 +19,13 @@ class Task{
       isDone: isDone?? this.isDone,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'text': title,
+      'priority': isDone,
+    };
+  }
+
 }

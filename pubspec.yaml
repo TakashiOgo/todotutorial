@@ -38,6 +38,8 @@ dependencies:
   cloud_firestore: ^4.0.2
   firebase_auth: ^4.0.2
   flutter_riverpod: ^2.0.2
+  sqflite: ^2.2.0+3
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

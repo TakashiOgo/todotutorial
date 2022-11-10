@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models.dart';
+import 'database.dart';
 
 const List<Task> tasksList = [
   Task(id: 0, title: 'task1', isDone: false),
@@ -10,7 +11,9 @@ const List<Task> tasksList = [
 final editProvider = StateProvider<bool>((ref) => false);
 
 class TasksNotifier extends StateNotifier<List<Task>> {
-  TasksNotifier(): super(tasksList);
+  TasksNotifier(this._taskDatabase): super(tasksList);
+
+  final TaskDatabase _taskDatabase;
 
   void addTask(Task newTask) {
     List<Task> newState = [];
@@ -75,8 +78,24 @@ class TasksNotifier extends StateNotifier<List<Task>> {
     state = newState;
   }
 
+  Future<List<Task>> getTodos() async {
+    return _taskDatabase.getTasks();
+  }
+
+  Future<void> insertTodo(Task task) async {
+    return _taskDatabase.insertTask(task);
+  }
+
+  Future<void> updateTodo(Task task) async {
+    return _taskDatabase.updateTask(task);
+  }
+
+  Future<void> deleteTodo(int id) async {
+    return _taskDatabase.deleteTask(id);
+  }
+
 }
 
 final tasksProvider = StateNotifierProvider<TasksNotifier, List<Task>>((ref) {
-  return TasksNotifier();
+  return TasksNotifier(TaskDatabase());
 });
