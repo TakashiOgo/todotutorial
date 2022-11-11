@@ -2,11 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models.dart';
 import 'database.dart';
 
-const List<Task> tasksList = [
-  Task(id: 0, title: 'task1', isDone: false),
-  Task(id: 1, title: 'task2', isDone: false),
-  Task(id: 2, title: 'task3', isDone: false),
-];
+List<Task> tasksList = [];
 
 final editProvider = StateProvider<bool>((ref) => false);
 
@@ -59,7 +55,7 @@ class TasksNotifier extends StateNotifier<List<Task>> {
     List<Task> newState = [];
     for (final task in state){
       if(task.id == id){
-        newState.add(task.copyWith(isDone: !task.isDone));
+        newState.add(task.copyWith(isDone: task.isDone==0?1:0));
       }else{
         newState.add(task);
       }
@@ -78,20 +74,31 @@ class TasksNotifier extends StateNotifier<List<Task>> {
     state = newState;
   }
 
-  Future<List<Task>> getTodos() async {
-    return _taskDatabase.getTasks();
+  Future<void> getTodos() async {
+    List<Task> newState = [];
+    newState = await _taskDatabase.getTasks();
+    state = newState;
   }
 
   Future<void> insertTodo(Task task) async {
-    return _taskDatabase.insertTask(task);
+    List<Task> newState = [];
+    _taskDatabase.insertTask(task);
+    newState = await _taskDatabase.getTasks();
+    state = newState;
   }
 
   Future<void> updateTodo(Task task) async {
-    return _taskDatabase.updateTask(task);
+    List<Task> newState = [];
+    _taskDatabase.updateTask(task);
+    newState = await _taskDatabase.getTasks();
+    state = newState;
   }
 
   Future<void> deleteTodo(int id) async {
-    return _taskDatabase.deleteTask(id);
+    List<Task> newState = [];
+    _taskDatabase.deleteTask(id);
+    newState = await _taskDatabase.getTasks();
+    state = newState;
   }
 
 }

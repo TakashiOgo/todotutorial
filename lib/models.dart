@@ -10,9 +10,9 @@ class Task{
 
   final int id;
   final String title;
-  final bool isDone;
+  final int isDone;
 
-  Task copyWith({int? id, String? title, bool? isDone}) {
+  Task copyWith({int? id, String? title, int? isDone}) {
     return Task(
       id: id?? this.id,
       title: title?? this.title,
@@ -23,8 +23,8 @@ class Task{
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'text': title,
-      'priority': isDone,
+      'title': title,
+      'isDone': isDone,
     };
   }
 

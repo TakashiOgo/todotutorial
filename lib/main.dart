@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models.dart';
 import 'providers.dart';
-import 'database.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -45,10 +44,7 @@ class MyHomePage extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder(
-          future: ref.read(tasksProvider.notifier).getTodos(),
-          builder: (context, snapshot) {
-            return ReorderableListView(
+        child:  ReorderableListView(
               header: editChange.state == false?null:ListTile(
                 onTap: ()=> showDialog<String>(
                     context: context,
@@ -56,6 +52,7 @@ class MyHomePage extends ConsumerWidget {
                       String title = '';
                       return Consumer(
                           builder: (context, ref, _) {
+                            ref.watch(tasksProvider.notifier).getTodos();
                             return AlertDialog(
                               title: const Text('タスクを追加'),
                               content: SizedBox(
@@ -74,7 +71,7 @@ class MyHomePage extends ConsumerWidget {
                                 TextButton(
                                   onPressed: (){
                                     ref.read(tasksProvider.notifier).insertTodo(
-                                        Task(id: DateTime.now().millisecondsSinceEpoch, title: title, isDone: false)
+                                        Task(id: DateTime.now().millisecondsSinceEpoch, title: title, isDone: 0)
                                     );
                                     Navigator.pop(context, 'OK');
                                   },
@@ -99,6 +96,7 @@ class MyHomePage extends ConsumerWidget {
                       String title = '';
                       return Consumer(
                           builder: (context, ref, _) {
+                            ref.watch(tasksProvider.notifier).getTodos();
                             return AlertDialog(
                               title: const Text('タスクを追加'),
                               content: SizedBox(
@@ -117,7 +115,7 @@ class MyHomePage extends ConsumerWidget {
                                 TextButton(
                                   onPressed: (){
                                     ref.read(tasksProvider.notifier).insertTodo(
-                                        Task(id: DateTime.now().millisecondsSinceEpoch, title: title, isDone: false)
+                                        Task(id: DateTime.now().millisecondsSinceEpoch, title: title, isDone: 0)
                                     );
                                     Navigator.pop(context, 'OK');
                                   },
@@ -144,6 +142,7 @@ class MyHomePage extends ConsumerWidget {
                               String title = '';
                               return Consumer(
                                   builder: (context, ref, _) {
+                                    ref.watch(tasksProvider.notifier).getTodos();
                                     return AlertDialog(
                                       title: const Text('タスクの編集'),
                                       content: SizedBox(
@@ -162,7 +161,7 @@ class MyHomePage extends ConsumerWidget {
                                         TextButton(
                                           onPressed: (){
                                             ref.read(tasksProvider.notifier).updateTodo(
-                                                Task(id: task.id, title: title, isDone: false));
+                                                Task(id: task.id, title: title, isDone: 0));
                                             Navigator.pop(context, 'OK');
                                           },
                                           child: const Text('OK'),
@@ -173,18 +172,16 @@ class MyHomePage extends ConsumerWidget {
                               );
                             }
                         );},
-                        title: Text(task.title, style: task.isDone == true?const TextStyle(decoration: TextDecoration.lineThrough):null,),
+                        title: Text(task.title, style: task.isDone == 1?const TextStyle(decoration: TextDecoration.lineThrough):null,),
                         trailing: editChange.state == true?
                         IconButton(
                           onPressed: (){ref.read(tasksProvider.notifier).deleteTodo(task.id);},
                           icon: Icon(Icons.clear),
-                        ): task.isDone == true?const Icon(Icons.done):null
+                        ): task.isDone == 1?const Icon(Icons.done):null
                     ),
                   ),
               ).toList(),
-            );
-          }
-        ),
+            ),
       ),
     );
   }

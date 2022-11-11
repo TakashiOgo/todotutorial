@@ -29,7 +29,7 @@ class TaskDatabase {
 
   Future<List<Task>> getTasks() async {
     final Database db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('task');
+    final List<Map> maps = await db.query('task');
     return List.generate(maps.length, (i) {
       return Task(
         id: maps[i]['id'],
